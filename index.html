@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>GW Products – Odoo + AI/LLM Engineer Assessment</title>
+<style>
+  :root{
+    --bg:#0f1115; --card:#171a21; --card2:#1e222b; --line:#2a2f3a;
+    --txt:#e9ecf1; --muted:#9aa3b2; --accent:#6c5ce7; --accent2:#8e7bff;
+    --good:#27c093; --warn:#ffb020; --bad:#ff5c5c; --radius:16px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:radial-gradient(1200px 600px at 50% -10%,#1b1f2b 0%,var(--bg) 60%);color:var(--txt);min-height:100vh}
+  .wrap{max-width:880px;margin:0 auto;padding:28px 18px 60px}
+  header{display:flex;align-items:center;gap:14px;justify-content:center;text-align:center;flex-direction:column;margin-bottom:26px}
+  header img{height:54px;width:auto;border-radius:10px;background:#fff;padding:6px}
+  .brandline{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+  .role{font-size:15px;color:var(--accent2);font-weight:600}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:26px}
+  .pill{display:inline-block;background:var(--card2);border:1px solid var(--line);color:var(--muted);
+    font-size:12px;padding:6px 12px;border-radius:999px;margin-bottom:14px}
+  h1{font-size:26px;margin:6px 0 10px}
+  p.lead{color:var(--muted);line-height:1.6;margin:0 0 22px}
+  .tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0 24px}
+  .tile{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:16px;text-align:center}
+  .tile .ic{font-size:22px}
+  .tile .big{font-size:17px;font-weight:700;margin:6px 0 4px}
+  .tile small{color:var(--muted);font-size:11.5px;line-height:1.4;display:block}
+  .btn{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--accent),var(--accent2));
+    color:#fff;border:none;font-size:16px;font-weight:700;padding:15px 26px;border-radius:12px;cursor:pointer;width:100%;justify-content:center}
+  .btn:active{transform:translateY(1px)}
+  .note{color:var(--warn);font-size:12.5px;margin-top:14px;text-align:center}
+  /* timer bar */
+  #timerBar{position:sticky;top:0;z-index:50;display:none;align-items:center;justify-content:center;gap:10px;
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:14px}
+  #clock{font-size:24px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:.04em}
+  #clock.low{color:var(--bad);animation:pulse 1s infinite}
+  @keyframes pulse{50%{opacity:.5}}
+  .clab{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+  #warnBanner{display:none;background:rgba(255,176,32,.12);border:1px solid var(--warn);color:var(--warn);
+    border-radius:10px;padding:10px 14px;font-size:13px;margin-bottom:12px;text-align:center}
+  #formStage{display:none}
+  .frame-wrap{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+  iframe{width:100%;min-height:1400px;border:0;background:#fff}
+  /* end screens */
+  #endStage,#blockStage{display:none;text-align:center}
+  .endIc{font-size:46px}
+  footer{text-align:center;color:var(--muted);font-size:12px;margin-top:26px}
+  @media(max-width:560px){.tiles{grid-template-columns:1fr}h1{font-size:22px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <img src="gw_logo.jpg" alt="GW Products" onerror="this.style.display='none'"/>
+    <div class="brandline">GW Products Talent Assessment</div>
+    <div class="role">Odoo + AI / LLM Engineer · MCQ Test</div>
+  </header>
+
+  <!-- INTRO -->
+  <section id="introStage" class="card">
+    <span class="pill">📋 Candidate Assessment</span>
+    <h1>Ready to Begin?</h1>
+    <p class="lead">This is a timed multiple-choice assessment for the <b>Odoo + AI/LLM Engineer (RAG, Agents, Integrations)</b> role at GW Products. Read every question carefully before answering. There are <b>20 questions</b>; you need <b>18 or more</b> to advance to the interview round.</p>
+    <div class="tiles">
+      <div class="tile"><div class="ic">⏱</div><div class="big">10 Minutes</div><small>Strict time limit. Form locks automatically when time is up.</small></div>
+      <div class="tile"><div class="ic">📵</div><div class="big">No External Help</div><small>Complete independently. No references or internet assistance.</small></div>
+      <div class="tile"><div class="ic">✅</div><div class="big">Submit In Time</div><small>Hit submit inside the form before the timer reaches zero.</small></div>
+    </div>
+    <button class="btn" id="startBtn">START ASSESSMENT →</button>
+    <div class="note">⚠️ Timer starts immediately when you click. You cannot pause it. Leaving the tab is recorded.</div>
+  </section>
+
+  <!-- FORM -->
+  <section id="formStage">
+    <div id="timerBar">
+      <span class="clab">Time Remaining</span>
+      <span id="clock">10:00</span>
+    </div>
+    <div id="warnBanner"></div>
+    <div class="frame-wrap">
+      <!-- ▼▼▼ REPLACE THE src BELOW WITH YOUR NEW GOOGLE FORM EMBED URL ▼▼▼ -->
+      <iframe id="formFrame"
+        src="https://docs.google.com/forms/d/e/1FAIpQLSfKEBppSVf8cvhPfq3-gNP6h2zZFX5EdxWz-_oO1IsilX3CNg/viewform?embedded=true"
+        loading="eager">Loading…</iframe>
+      <!-- ▲▲▲ keep the ?embedded=true at the end of the URL ▲▲▲ -->
+    </div>
+  </section>
+
+  <!-- TIME'S UP -->
+  <section id="endStage" class="card">
+    <div class="endIc">⛔</div>
+    <h1>Time's Up!</h1>
+    <p class="lead">Your 10 minutes have ended and the assessment form has been locked. If you submitted before the timer ran out, your responses have been recorded.</p>
+    <div class="tile" style="text-align:center"><div class="ic">📬</div><div class="big">Submission Received</div><small>If you hit submit, your answers are safely saved. Our team will review your results and be in touch shortly.</small></div>
+  </section>
+
+  <!-- BLOCKED (too many tab leaves) -->
+  <section id="blockStage" class="card">
+    <div class="endIc">🚫</div>
+    <h1>Assessment Ended</h1>
+    <p class="lead">This assessment was closed because the tab was switched away too many times. Per the integrity rules, the test must be completed in one focused session. Please contact <b>recruitment@gwproductsusa.com</b> if you believe this was an error.</p>
+  </section>
+
+  <footer>Odoo + AI/LLM Engineer Assessment · GW Products · recruitment@gwproductsusa.com</footer>
+</div>
+
+<script>
+(function(){
+  var DURATION = 10 * 60;          // 10 minutes
+  var MAX_BLUR  = 3;               // tab switches allowed before block
+  var remaining = DURATION, timerId = null, started = false, blurs = 0;
+
+  var intro = document.getElementById('introStage');
+  var formS = document.getElementById('formStage');
+  var endS  = document.getElementById('endStage');
+  var blockS= document.getElementById('blockStage');
+  var bar   = document.getElementById('timerBar');
+  var clock = document.getElementById('clock');
+  var warn  = document.getElementById('warnBanner');
+
+  function fmt(s){var m=Math.floor(s/60),x=s%60;return m+':'+(x<10?'0':'')+x;}
+
+  function tick(){
+    remaining--;
+    clock.textContent = fmt(remaining);
+    if(remaining<=60) clock.classList.add('low');
+    if(remaining<=0){ finish(); }
+  }
+
+  function start(){
+    if(started) return; started=true;
+    intro.style.display='none';
+    formS.style.display='block';
+    bar.style.display='flex';
+    clock.textContent = fmt(remaining);
+    timerId = setInterval(tick,1000);
+    window.scrollTo(0,0);
+  }
+
+  function finish(){
+    clearInterval(timerId);
+    formS.style.display='none';
+    endS.style.display='block';
+    window.scrollTo(0,0);
+  }
+
+  function block(){
+    clearInterval(timerId);
+    formS.style.display='none';
+    endS.style.display='none';
+    blockS.style.display='block';
+    window.scrollTo(0,0);
+  }
+
+  document.getElementById('startBtn').addEventListener('click', start);
+
+  // --- MEDIUM ANTI-CHEAT ---
+  // 1) disable copy / cut / paste / right-click / text selection
+  ['copy','cut','paste','contextmenu','selectstart','dragstart'].forEach(function(ev){
+    document.addEventListener(ev, function(e){ if(started) e.preventDefault(); });
+  });
+  // 2) tab-switch / window-blur detection with warning, then block
+  function onLeave(){
+    if(!started) return;
+    blurs++;
+    if(blurs > MAX_BLUR){ block(); return; }
+    warn.style.display='block';
+    warn.textContent = '⚠️ Tab switching detected ('+blurs+'/'+MAX_BLUR+'). Stay on this page — leaving again may end your assessment.';
+  }
+  document.addEventListener('visibilitychange', function(){ if(document.hidden) onLeave(); });
+  window.addEventListener('blur', onLeave);
+  // 3) warn before closing/refreshing mid-test
+  window.addEventListener('beforeunload', function(e){
+    if(started){ e.preventDefault(); e.returnValue=''; }
+  });
+})();
+</script>
+</body>
+</html>
